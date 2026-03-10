@@ -6,7 +6,7 @@
 
 - [ ] **Dry run the entire workshop** yourself (complete all 4 exercises)
 - [ ] **Test BMad installation** on your machine with clean state
-- [ ] **Verify GitHub Copilot** is responding correctly to `@bmad` agents
+- [ ] **Verify GitHub Copilot** is responding correctly to slash commands (e.g., `/bmad-help`)
 - [ ] **Create backup artifacts** (PRD, Architecture files, Component specs)
 - [ ] **Prepare demo repository** with completed to-do app
 - [ ] **Download videos** locally in case of internet issues
@@ -60,24 +60,24 @@
 Participants will:
 1. Create empty folder: `bmad-todo-workshop`
 2. Run: `npx bmad-method install`
-3. Select: "React + TypeScript + TailwindCSS"
-4. Verify: `.bmad/` folder exists with agents and templates
+3. When prompted, select: **BMad Method** module
+4. Verify: `_bmad/` and `_bmad-output/` folders exist
 
 **Facilitator Actions:**
 - Monitor chat for error messages
 - Check everyone sees "Installation complete" message
 - Troubleshoot npm version issues (see Troubleshooting section)
-- Share backup `.bmad/` folder if anyone fails installation
+- Share backup `_bmad/` folder if anyone fails installation
 
 **Success Criteria:**
-- `.bmad/` folder exists
-- `agents/`, `prompts/`, `templates/` subfolders present
-- GitHub Copilot recognizes `@bmad` when typed in Chat
+- `_bmad/` folder exists
+- `_bmad-output/` folder exists for generated artifacts
+- GitHub Copilot responds to `/bmad-help` in Chat
 
 **Common Issues:**
 - Old npm version: `npm install -g npm@latest`
 - Permission errors: Run terminal as Administrator
-- Copilot not seeing agents: Restart VS Code
+- Copilot not responding to slash commands: Restart VS Code
 
 ---
 
@@ -88,25 +88,26 @@ Participants will:
 **Exercise 2: Product Requirements Document**
 
 Participants will:
-1. Open Copilot Chat
-2. Type: `@bmad /start-work`
-3. Respond to PM agent questions:
-   - Project name: "To-Do App"
-   - Description: "Simple task manager with add, complete, delete"
-   - Confirm scope: "Yes, start with core features"
-4. Review generated `docs/prd.md`
+1. Open a **new chat** in Copilot Chat
+2. Type: `/bmad-pm` to invoke the PM agent
+3. Type: `/bmad-create-prd` to run the PRD workflow
+4. Respond to PM agent questions using shorthand:
+   - Project name: `To-Do App`
+   - Description: `Simple task manager: add tasks, mark complete, delete tasks, view list. No auth.`
+   - Confirm scope: `Y` (accept core features)
+5. Review generated PRD saved to `_bmad-output/`
 
 **Facilitator Actions:**
 - **Critical:** The PM agent asks MANY questions. Guide participants to:
-  - **Keep answers concise** (1-2 sentences)
-  - **Accept default suggestions** when offered
-  - **Say "Yes, proceed" when asked for confirmation**
-- Watch for "context pollution" (agent repeating questions)
-  - Fix: Type `/clear` and restart with `@bmad /start-work`
+  - **Use `Y`/`N`** to accept or decline suggestions (fastest)
+  - **Provide all info upfront in one message** to skip follow-up questions
+  - **Type `A`** to accept all remaining defaults at once
+- Watch for confusion or agent getting stuck
+  - Fix: Start a **fresh chat** and restart with `/bmad-pm` then `/bmad-create-prd`
 - Share pre-built PRD if anyone falls >5 minutes behind
 
 **Success Criteria:**
-- `docs/prd.md` file created
+- PRD file created in `_bmad-output/`
 - Contains: Project Overview, Core Features, User Stories
 - User stories follow format: "As a [role], I want [action], so that [benefit]"
 
@@ -131,7 +132,7 @@ Simple task management application allowing users to create, complete, and delet
 
 **Timing Risk:** This exercise can run long. If >30 minutes:
 - **Stop new PRD work**
-- **Distribute pre-built PRD** to everyone
+- **Distribute pre-built PRD** to everyone (copy to `_bmad-output/`)
 - **Move to Exercise 3**
 
 ---
@@ -143,22 +144,26 @@ Simple task management application allowing users to create, complete, and delet
 **Exercise 3: Technical Architecture**
 
 Participants will:
-1. Type: `@bmad /arch`
-2. Architect agent reads PRD and asks clarifying questions:
-   - State management: "Yes, use React Context"
-   - Styling: "Yes, TailwindCSS is fine"
-   - Data persistence: "Local storage for now"
-3. Review generated `docs/architecture.md` and `docs/adrs/`
+1. Open a **new chat** in Copilot Chat
+2. Type: `/bmad-architect` to invoke the Architect agent
+3. Type: `/bmad-create-architecture` to run the architecture workflow
+4. Architect agent reads PRD and asks clarifying questions:
+   - State management: `Y` (use React Context)
+   - Styling: `Y` (TailwindCSS is fine)
+   - Data persistence: `Y` (local storage for now)
+5. Open another **new chat**, type `/bmad-pm` then `/bmad-create-epics-and-stories` to break PRD into epics and stories
+6. Review generated architecture document in `_bmad-output/`
 
 **Facilitator Actions:**
 - Explain ADRs (Architecture Decision Records) concept
 - Point out key sections: Component Structure, Data Flow, Tech Stack
-- Verify everyone has both `architecture.md` and at least 1 ADR file
+- Verify everyone has the architecture document in `_bmad-output/`
 - Share pre-built architecture if anyone is blocked
 
 **Success Criteria:**
-- `docs/architecture.md` exists with component diagrams
-- `docs/adrs/` folder contains decision records
+- Architecture document exists in `_bmad-output/` with component diagrams
+- ADRs are included in the architecture document
+- Epics and stories created by `/bmad-create-epics-and-stories`
 - Participants understand the component hierarchy
 
 **Expected Architecture:**
@@ -193,17 +198,20 @@ App
 **Exercise 4: Implement First User Story**
 
 Participants will:
-1. Type: `@bmad /start-story`
-2. Developer agent shows story list, select: "Add new tasks"
-3. Agent asks implementation questions:
+1. Open a **new chat** in Copilot Chat
+2. Type: `/bmad-sm` to invoke the SM agent
+3. Type: `/bmad-sprint-planning` (first time only, to initialize sprint tracking)
+4. Type: `/bmad-create-story` and select "Add new tasks" (story 1)
+5. Open another **new chat** and type: `/bmad-dev-story` to implement the story
+6. Agent asks implementation questions:
    - Component name: "AddTodoForm"
    - Validation: "Yes, prevent empty tasks"
    - Submit behavior: "Clear input after add"
-4. Agent generates:
+7. Agent generates:
    - `src/components/AddTodoForm.tsx`
    - `src/components/AddTodoForm.test.tsx`
    - Updated `src/App.tsx`
-5. Test the component:
+8. Test the component:
    ```bash
    npm install
    npm run dev
@@ -327,14 +335,14 @@ export const AddTodoForm: React.FC<AddTodoFormProps> = ({ onAddTodo }) => {
 ### Backup Plans
 
 **If installation fails entirely:**
-- Share pre-configured `.bmad/` folder
+- Share pre-configured `_bmad/` folder
 - Participants can copy into their project
-- Restart VS Code to recognize agents
+- Restart VS Code to recognize slash commands
 
 **If agent isn't responding:**
 1. Check Copilot subscription is active
 2. Restart VS Code
-3. Type `@workspace /help` to verify Copilot is working
+3. Type `/bmad-help` to verify Copilot is working
 4. If still broken, pair participant with neighbor
 
 **If >30% of room is stuck:**
@@ -364,8 +372,7 @@ Thanks for registering! To maximize hands-on learning time, please complete this
 **2. Verify GitHub Copilot**
 - Open VS Code
 - Open Copilot Chat (Ctrl+Shift+I or Cmd+Shift+I)
-- Type: `@workspace /help`
-- You should see a response
+- You should see the Copilot Chat panel open and be ready to accept commands
 
 **3. Create Workshop Folder**
 ```bash

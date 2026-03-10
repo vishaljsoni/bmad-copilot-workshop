@@ -239,6 +239,9 @@ Verify it contains:
 - Stick to the 4 core features listed
 - Resist adding login, databases, etc.
 
+**Use `/bmad-help` when unsure:**
+- Type `/bmad-help` at any time — it will guide you on what to do next
+
 ### ⚠️ Common Issues
 
 **"I can't find the agent file"**
@@ -316,6 +319,7 @@ The architecture document should contain:
 
 - `_bmad-output/architecture.md` exists with component diagram
 - Component structure shows: App → TodoList → TodoItem + AddTodoForm
+- Epics and stories created by `/bmad-create-epics-and-stories`
 
 ### 💡 Understanding Architecture Decision Records (ADRs)
 
@@ -384,6 +388,15 @@ Save the story output to `_bmad-output/stories/story-001-add-task.md`
 
 Please run the bmad-dev-story workflow to implement this story.
 ```
+(Story 1: Add new tasks)
+
+**3. Implement the story in a new chat**
+
+> ⚠️ Open another **new chat session** to implement the story.
+
+```
+/bmad-dev-story
+```
 
 **4. Answer implementation questions**
 
@@ -422,7 +435,7 @@ npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
-**7. Run the development server**
+**8. Run the development server**
 
 ```bash
 npm run dev
@@ -430,7 +443,7 @@ npm run dev
 
 Open browser to: `http://localhost:5173`
 
-**8. Test your component**
+**9. Test your component**
 
 - Type in the input field
 - Click "Add Task" button

@@ -5,53 +5,61 @@
 ### Installation
 ```bash
 npx bmad-method install
+# When prompted, select: BMad Method
 ```
 
-### BMad Agent Commands (in Copilot Chat)
+### BMad Slash Commands (in Copilot Chat)
 
-| Command | Purpose | When to Use |
-|---------|---------|-------------|
-| `@bmad /help` | Show all commands | First step, or when stuck |
-| `@bmad /start-work` | Start new project | Begin Exercise 2 (PRD) |
-| `@bmad /arch` | Generate architecture | After PRD complete |
-| `@bmad /start-story` | Implement user story | After Architecture complete |
-| `@bmad /test` | Generate tests | After component created |
-| `@bmad /review` | Code review | Before finalizing |
+| Command | Agent | Purpose |
+|---------|-------|---------|
+| `/bmad-help` | Any | Your intelligent guide — ask anything! |
+| `/bmad-pm` | PM | Invoke Product Manager agent |
+| `/bmad-create-prd` | PM | Create Product Requirements Document |
+| `/bmad-architect` | Architect | Invoke Architect agent |
+| `/bmad-create-architecture` | Architect | Create architecture document |
+| `/bmad-create-epics-and-stories` | PM | Break down PRD into epics |
+| `/bmad-sm` | SM | Invoke Scrum Master agent |
+| `/bmad-sprint-planning` | SM | Initialize sprint tracking |
+| `/bmad-create-story` | SM | Create a story file |
+| `/bmad-dev-story` | DEV | Implement a story |
+| `/bmad-code-review` | DEV | Review implemented code |
 
 ### Copilot Chat Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
 | `Ctrl+Shift+I` (Win) / `Cmd+Shift+I` (Mac) | Open Copilot Chat |
-| `/clear` | Clear chat history |
-| `@workspace /help` | Test if Copilot is active |
-| `@workspace /reindex` | Refresh file index |
+| Open new chat tab | Start a fresh context for each workflow |
+
+> ⚠️ **Key Rule:** Each BMad workflow should run in its own **fresh chat session**.
 
 ---
 
 ## 🔄 The 4-Phase Workflow
 
 ### 1️⃣ Analysis Phase
-**Command:** `@bmad /start-work`  
+**Commands:** `/bmad-pm` → `/bmad-create-prd`  
 **Agent:** Product Manager (PM)  
-**Output:** `docs/prd.md`  
+**Output:** PRD saved to `_bmad-output/`  
 **Contains:** Features, User Stories, Success Criteria
 
 ### 2️⃣ Planning Phase
-**Command:** `@bmad /arch`  
+**Commands:** `/bmad-architect` → `/bmad-create-architecture`  
 **Agent:** Architect  
-**Output:** `docs/architecture.md` + `docs/adrs/*.md`  
+**Output:** Architecture document + ADRs in `_bmad-output/`  
 **Contains:** Component structure, Tech stack, Decision records
 
-### 3️⃣ Solutioning Phase
-**Command:** `@bmad /start-story`  
-**Agent:** Developer (planning mode)  
-**Output:** Component specifications  
-**Contains:** Implementation plan, API design
+*(Then open a new chat → `/bmad-pm` → `/bmad-create-epics-and-stories` to break PRD into epics & stories)*
+
+### 3️⃣ Story Preparation Phase
+**Commands:** `/bmad-sm` → `/bmad-sprint-planning` (first time) → `/bmad-create-story`  
+**Agent:** Scrum Master (SM)  
+**Output:** Story file ready for implementation  
+**Contains:** Implementation plan, acceptance criteria
 
 ### 4️⃣ Implementation Phase
-**Command:** (Continue from step 3)  
-**Agent:** Developer (coding mode)  
+**Commands:** `/bmad-dev-story` (in a new chat)  
+**Agent:** Developer (DEV)  
 **Output:** Component files + tests  
 **Contains:** Working code, unit tests
 
@@ -61,38 +69,55 @@ npx bmad-method install
 
 ```
 your-project/
-├── .bmad/                  # BMad configuration
-│   ├── agents/           # Agent definitions
-│   ├── prompts/          # Agent prompts
-│   └── templates/        # Code templates
-├── docs/
-│   ├── prd.md            # Product Requirements
-│   ├── architecture.md   # Technical design
-│   └── adrs/             # Architecture Decision Records
+├── _bmad/                     # BMad configuration
+│   └── bmm/                   # BMad Method module
+│       ├── agents/            # Agent definitions
+│       ├── workflows/         # Workflow definitions
+│       └── tasks/             # Task definitions
+├── _bmad-output/              # Generated artifacts
+│   ├── prd.md                 # Product Requirements (generated)
+│   ├── architecture.md        # Technical design (generated)
+│   └── stories/               # Story files (generated)
 └── src/
-    ├── components/       # Your components
-    └── App.tsx           # Main app file
+    ├── components/            # Your components (generated)
+    └── App.tsx                # Main app file
 ```
 
 ---
 
 ## 📝 Agent Question Tips
 
-### Product Manager Agent
-- **Keep answers short** (1-2 sentences)
-- **Accept defaults** when suggested
+### ⚡ Shorthand Elicitation (All Agents)
+
+When an agent asks questions during a workflow, use the **shortest possible responses**:
+
+| Shorthand | Meaning |
+|-----------|---------|
+| `Y` | Yes / Agree |
+| `N` | No / Decline |
+| `A` | Accept all remaining defaults |
+| One-line answer | Provide everything upfront to skip follow-up questions |
+
+**Example:** Instead of typing full sentences for each question, give all info at once:
+```
+To-Do App. Simple task manager: add tasks, mark complete, delete tasks, view list. No auth or cloud sync.
+```
+
+### Product Manager Agent (`/bmad-pm`)
+- **Keep answers short** (1-2 sentences or just `Y`/`N`)
+- **Accept defaults** with `Y` when suggested
 - **Be specific** about core features
 - **Avoid scope creep** (no login, databases, etc.)
 
-### Architect Agent
-- **Trust the suggestions** (they're based on best practices)
+### Architect Agent (`/bmad-architect`)
+- **Trust the suggestions** — respond `Y` to accept best-practice defaults
 - **Choose simple options** (Context over Redux, LocalStorage over DB)
 - **Ask for explanations** if confused
 
-### Developer Agent
+### Developer Agent (`/bmad-dev-story`)
 - **Pick clear component names** (AddTodoForm, not Form1)
-- **Request validation** when needed
-- **Ask for tests** to be included
+- **Request validation** when needed — type `Y, validate input`
+- **Ask for tests** to be included — type `Y, include tests`
 - **Review code** before accepting
 
 ---
@@ -101,47 +126,51 @@ your-project/
 
 ### Faster PRD Creation
 ```
-@bmad /start-work
+# Open a new chat, then:
+/bmad-pm
+/bmad-create-prd
 
-# When asked for features, give complete list:
-"Features: add tasks, mark complete, delete tasks, view list"
-
-# When asked about users:
-"Individual users tracking personal tasks"
-
-# When asked about scope:
-"Keep it simple - no auth or cloud sync"
+# Tip: Provide all info upfront to skip follow-up questions:
+To-Do App. Simple task manager: add tasks, mark complete, delete tasks, view list. No auth or cloud sync.
 ```
 
 ### Faster Architecture
 ```
-@bmad /arch
+# Open a new chat, then:
+/bmad-architect
+/bmad-create-architecture
 
-# Quick answers:
-"Use React Context, LocalStorage, and TailwindCSS"
+# Quick answer: Y to use React Context, LocalStorage, and TailwindCSS
+
+# Then open a new chat for epics and stories:
+/bmad-pm
+/bmad-create-epics-and-stories
 ```
 
 ### Faster Story Implementation
 ```
-@bmad /start-story
+# Open a new chat, then:
+/bmad-sm
+/bmad-sprint-planning   # first time only
+/bmad-create-story      # select story 1, answer Y to defaults
 
-# Select story number: 1
-# Component name: AddTodoForm
-# Additional requirements: "Validate input, clear after submit, include tests"
+# Open another new chat, then:
+/bmad-dev-story
+# Tip: AddTodoForm, Y validate input, Y include tests
 ```
 
 ---
 
 ## 🔴 Common Issues
 
-### Issue: "@bmad not recognized"
-**Fix:** Restart VS Code, then try `@bmad /help`
+### Issue: "Slash commands not working"
+**Fix:** Restart VS Code, verify `_bmad/` folder exists, then try `/bmad-help`
 
 ### Issue: PM agent loops same question
-**Fix:** Type `/clear` then `@bmad /start-work`
+**Fix:** Open a **fresh chat**, then `/bmad-pm` and `/bmad-create-prd`
 
 ### Issue: "Can't find PRD file"
-**Fix:** Verify `docs/prd.md` exists, then `@workspace /reindex`
+**Fix:** Verify PRD exists in `_bmad-output/`, start fresh chat with `/bmad-architect`
 
 ### Issue: TypeScript errors in generated code
 **Fix:** Check if `npm run dev` works - if yes, ignore red squiggles
@@ -154,18 +183,20 @@ your-project/
 ## 🎯 Success Checklist
 
 ### After Exercise 1 (Installation)
-- [ ] `.bmad/` folder exists
-- [ ] `@bmad /help` shows commands
+- [ ] `_bmad/` folder exists
+- [ ] `_bmad-output/` folder exists
+- [ ] `/bmad-help` shows intelligent guide response
 
 ### After Exercise 2 (PRD)
-- [ ] `docs/prd.md` file exists
+- [ ] PRD file exists in `_bmad-output/`
 - [ ] Contains 3+ user stories
 - [ ] Stories follow: "As a [role], I want [feature] so that [benefit]"
 
 ### After Exercise 3 (Architecture)
-- [ ] `docs/architecture.md` exists
+- [ ] Architecture document exists in `_bmad-output/`
 - [ ] Contains component diagram
-- [ ] At least 2 ADR files in `docs/adrs/`
+- [ ] ADRs included in architecture document
+- [ ] Epics and stories created
 
 ### After Exercise 4 (Implementation)
 - [ ] Component `.tsx` file created
@@ -193,11 +224,13 @@ Format:
 - **Consequences:** What are the trade-offs?
 
 ### Agent Roles
-- **PM:** Business requirements, user stories
-- **Architect:** Technical design, component structure
-- **Developer:** Code generation, implementation
-- **QA:** Test generation, quality checks
-- **DevOps:** Deployment, CI/CD (advanced)
+- **PM:** Business requirements, user stories (`/bmad-pm`)
+- **Architect:** Technical design, component structure (`/bmad-architect`)
+- **SM:** Sprint planning, story creation (`/bmad-sm`)
+- **Developer:** Code generation, implementation (`/bmad-dev-story`)
+
+### Fresh Chat Per Workflow
+BMad V6 works best when each workflow runs in a **new chat session**. This prevents context pollution and ensures agents start fresh with the right context.
 
 ---
 
@@ -205,17 +238,37 @@ Format:
 
 ### Complete Your App
 ```bash
-# Implement remaining stories
-@bmad /start-story  # Story 2: Mark complete
-@bmad /start-story  # Story 3: Delete tasks
+# Implement remaining stories (each in a fresh chat)
+
+# Story 2: Mark complete
+/bmad-sm
+/bmad-create-story   # select story 2
+# Then in new chat:
+/bmad-dev-story
+
+# Story 3: Delete tasks
+/bmad-sm
+/bmad-create-story   # select story 3
+# Then in new chat:
+/bmad-dev-story
 ```
 
 ### Add Features
 ```bash
-# 1. Update PRD with new feature
-# 2. Update architecture: @bmad /arch
-# 3. Create user story
-# 4. Implement: @bmad /start-story
+# 1. Update PRD with new feature (fresh chat)
+/bmad-pm
+/bmad-create-prd
+# 2. Update architecture (fresh chat)
+/bmad-architect
+/bmad-create-architecture
+# 3. Create epics and stories (fresh chat)
+/bmad-pm
+/bmad-create-epics-and-stories
+# 4. Create user story (fresh chat)
+/bmad-sm
+/bmad-create-story
+# 5. Implement (fresh chat)
+/bmad-dev-story
 ```
 
 ### Learn More

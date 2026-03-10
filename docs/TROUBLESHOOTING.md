@@ -108,33 +108,28 @@ nvm use 20
 
 ## GitHub Copilot Issues
 
-### "@bmad not recognized" in Copilot Chat
+### "Slash commands not available" in Copilot Chat
 
-**Cause:** Copilot hasn't indexed the `.bmad/` folder yet
+**Cause:** BMad slash commands (`/bmad-help`, `/bmad-pm`, etc.) are not recognized
 
 **Solutions:**
 
 1. **Restart VS Code**
    - Close and reopen VS Code
    - Wait 10 seconds for indexing
-   - Try `@bmad /help`
+   - Try `/bmad-help`
 
-2. **Reindex workspace**
-   ```
-   # In Copilot Chat:
-   @workspace /reindex
-   ```
-
-3. **Verify .bmad folder exists**
+2. **Verify `_bmad/` folder exists**
    ```bash
-   ls -la .bmad/
-   # Should show: agents/, prompts/, templates/
+   ls -la _bmad/
+   # Should show: bmm/ subfolder
    ```
 
-4. **Reinstall BMad**
+3. **Reinstall BMad**
    ```bash
-   rm -rf .bmad/
+   rm -rf _bmad/ _bmad-output/
    npx bmad-method install
+   # When prompted, select: BMad Method
    ```
 
 ---
@@ -166,20 +161,18 @@ nvm use 20
 **Solutions:**
 
 1. **Use exact command syntax**
-   - Correct: `@bmad /start-work`
-   - Wrong: `@bmad start work` (missing slash)
-   - Wrong: `bmad /start-work` (missing @)
+   - Correct: `/bmad-pm` then `/bmad-create-prd`
+   - Wrong: `/bmad pm` (missing hyphen)
+   - Wrong: `bmad-pm` (missing leading slash)
 
-2. **Clear chat and restart**
-   ```
-   /clear
-   @bmad /start-work
-   ```
+2. **Start a fresh chat**
+   - Open a new chat session (do not reuse old chats)
+   - Run `/bmad-pm` then `/bmad-create-prd`
 
-3. **Verify agents are loaded**
+3. **Verify slash commands are available**
    ```
-   @bmad /help
-   # Should show list of available commands
+   /bmad-help
+   # Should show intelligent guide with available workflows
    ```
 
 ---
@@ -192,19 +185,17 @@ nvm use 20
 
 **Solutions:**
 
-1. **Clear and restart**
-   ```
-   /clear
-   @bmad /start-work
-   ```
+1. **Start a fresh chat**
+   - Open a new chat session (do not reuse the old chat)
+   - Run `/bmad-pm` then `/bmad-create-prd`
 
 2. **Give more direct answers**
    - Instead of: "I think maybe we could have..."
    - Say: "Yes, add those features"
 
 3. **Use backup PRD**
-   - Ask facilitator for pre-built `prd.md`
-   - Copy to `docs/prd.md`
+   - Ask facilitator for pre-built PRD file
+   - Copy to `_bmad-output/`
    - Continue to next exercise
 
 ---
@@ -215,27 +206,25 @@ nvm use 20
 
 **Solutions:**
 
-1. **Verify PRD exists**
+1. **Verify PRD exists in output folder**
    ```bash
-   ls docs/prd.md
-   # Should show: docs/prd.md
+   ls _bmad-output/
+   # Should show PRD file
    ```
 
 2. **Check file content**
    ```bash
-   cat docs/prd.md
+   # Look in _bmad-output/ for the PRD document
    # Should contain: Project Overview, Features, User Stories
    ```
 
-3. **Reindex and retry**
-   ```
-   @workspace /reindex
-   @bmad /arch
-   ```
+3. **Start fresh and retry**
+   - Open a new chat session
+   - Run `/bmad-architect` then `/bmad-create-architecture`
 
 4. **Use backup PRD**
-   - Copy pre-built PRD to `docs/prd.md`
-   - Try `@bmad /arch` again
+   - Copy pre-built PRD to `_bmad-output/`
+   - Try `/bmad-architect` then `/bmad-create-architecture` in a fresh chat
 
 ---
 
@@ -467,8 +456,9 @@ Exact code/wording differences are fine.
 
 4. **Clear and start fresh**
    ```
-   /clear
-   @bmad /start-story
+   # Open a new chat session
+   /bmad-sm
+   /bmad-create-story
    ```
 
 ---
@@ -544,16 +534,16 @@ npm --version
 # Expected: 9.x.x or higher
 
 # 3. BMad folder exists
-ls -la .bmad/
-# Expected: agents/, prompts/, templates/
+ls -la _bmad/
+# Expected: bmm/ subfolder
 
-# 4. Copilot is active
-# In VS Code Copilot Chat: @workspace /help
-# Expected: Response from Copilot
+# 4. BMad output folder exists
+ls -la _bmad-output/
+# Expected: folder exists (may be empty before exercises)
 
-# 5. PRD file exists (after Exercise 2)
-ls docs/prd.md
-# Expected: docs/prd.md
+# 5. Copilot is active
+# In VS Code Copilot Chat: /bmad-help
+# Expected: Intelligent guide response from BMad
 
 # 6. Dependencies installed (after Exercise 4)
 ls node_modules/

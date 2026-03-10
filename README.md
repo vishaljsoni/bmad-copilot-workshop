@@ -41,8 +41,7 @@ node --version  # Should show v20.x.x or higher
 
 # Verify Copilot is active
 # In VS Code: Open Copilot Chat (Ctrl+Shift+I or Cmd+Shift+I)
-# Type: @workspace /help
-# You should see a response
+# You should see the Copilot Chat panel open and ready
 ```
 
 ## 🚀 Workshop Agenda
@@ -75,7 +74,7 @@ bmad-copilot-workshop/
 ├── materials/
 │   ├── slides/                        # PowerPoint presentation
 │   ├── backup-artifacts/              # Pre-built PRD, Architecture files
-│   └── cheat-sheet.pdf               # Quick reference card
+│   └── QUICK_REFERENCE.md            # Quick reference card
 └── examples/
     └── completed-todo-app/            # Finished application for reference
 ```
@@ -114,7 +113,17 @@ Includes:
    cd my-todo-app
    ```
 
-3. **Follow along with the workshop!**
+3. **Install BMad Method**
+   ```bash
+   npx bmad-method install
+   # When prompted, select: BMad Method
+   ```
+
+   After installation you'll see two key folders:
+   - `_bmad/` — BMad configuration and agents
+   - `_bmad-output/` — Where all generated artifacts are saved
+
+4. **Follow along with the workshop!**
 
 ## 📚 Additional Resources
 
