@@ -4,6 +4,8 @@
 
 This guide contains step-by-step instructions for all workshop exercises using **BMad Method v6** with **GitHub Copilot**. Follow along at your own pace, and don't hesitate to ask your facilitator for help!
 
+> ⚠️ **Important:** BMad v6 does **not** support `@bmad` as a GitHub Copilot chat participant. The `@bmad` command will not work. This guide shows you the correct way to use BMad with GitHub Copilot using agent file references.
+
 ---
 
 ## 🎯 What You'll Build
@@ -27,14 +29,28 @@ node --version
 
 # Git is available
 git --version
-# Should show: git version 2.x.x or higher
-
-# Copilot is active
-# In VS Code: Ctrl+Shift+I (Windows) or Cmd+Shift+I (Mac)
-# You should see the Copilot Chat panel open
 ```
 
+Open VS Code and verify GitHub Copilot is active:
+- Open Copilot Chat: `Ctrl+Shift+I` (Windows) or `Cmd+Shift+I` (Mac)
+- You should see the Copilot Chat panel open
+
 If any check fails, ask your facilitator for help NOW.
+
+---
+
+## How BMad Works with GitHub Copilot
+
+BMad v6 is natively designed for Claude Code and Cursor. For **GitHub Copilot**, you interact with BMad agents by **attaching the agent's markdown file as context** in Copilot Chat using the `#file:` reference — then giving instructions as if you are talking to that agent.
+
+**The pattern is:**
+
+1. Install BMad → agent files are created in `_bmad/`
+2. Open Copilot Chat
+3. Type `#file:_bmad/...` to attach the relevant agent file
+4. Ask the agent to run a specific workflow
+
+This is how you "invoke" a BMad agent in GitHub Copilot — there is no `@bmad` shortcut.
 
 ---
 
@@ -63,10 +79,8 @@ npx bmad-method install
 
 When prompted:
 - **Installation location:** Current directory (press Enter)
-- **AI Tools:** Choose **GitHub Copilot**
+- **AI Tools:** Choose **none** (since we're using GitHub Copilot, which uses file references rather than IDE-specific skills)
 - **Modules:** Select **BMad Method (BMM)**
-
-Use arrow keys and Enter to select.
 
 **4. Wait for installation to complete**
 
@@ -92,13 +106,14 @@ ls -la
 Explore the agent files:
 ```bash
 ls _bmad/bmm/
-# You will see agent and workflow files
+# You will see agent and workflow files like:
+# pm-agent.md, architect-agent.md, dev-agent.md, etc.
 ```
 
 ### ✅ Success Criteria
 
 - `_bmad/` folder exists (note: underscore prefix, NOT `.bmad/`)
-- `_bmad-output/` folder exists for generated artifacts
+- `_bmad-output/` folder exists
 - No error messages in terminal
 
 ### ⚠️ Common Issues
@@ -113,7 +128,7 @@ ls _bmad/bmm/
 
 **Installation hangs**
 - Check internet connection
-- Try: `Ctrl+C` (Windows/Linux) or `Cmd+C` (Mac) to cancel, then run again
+- Try: `Ctrl+C` to cancel, then run again
 
 ---
 
@@ -122,9 +137,21 @@ ls _bmad/bmm/
 ### Goal
 Use the PM (Product Manager) agent to create a PRD for your to-do app.
 
+### How to Invoke a BMad Agent in Copilot
+
+Since `@bmad` does not work in GitHub Copilot, you attach agent files using `#file:` in Copilot Chat:
+
+```
+#file:_bmad/bmm/agents/pm-agent.md
+
+Please run the `bmad-create-prd` workflow. I want to create a PRD for a simple to-do app.
+```
+
+> 💡 **Tip:** Type `#file:` in Copilot Chat and then start typing `_bmad` — VS Code's file picker will help you locate and attach the file.
+
 ### Steps
 
-**1. Open VS Code**
+**1. Open VS Code in your project**
 ```bash
 code .
 ```
@@ -133,23 +160,18 @@ code .
 - Windows: `Ctrl+Shift+I`
 - Mac: `Cmd+Shift+I`
 
-**3. Start a fresh chat and invoke the PM agent**
-
-> ⚠️ **Important:** Each BMad workflow should run in its own **fresh chat session**. Open a new chat before each exercise.
+**3. Start the PM agent by attaching its file**
 
 In Copilot Chat, type:
 ```
-/bmad-pm
-```
+#file:_bmad/bmm/agents/pm-agent.md
 
-Then run the PRD creation workflow:
-```
-/bmad-create-prd
+Please run the bmad-create-prd workflow. My project is a simple to-do app.
 ```
 
 **4. Answer the PM agent's questions**
 
-The agent will ask several questions. Here are **recommended answers**:
+The agent will guide you conversationally. Here are **recommended answers**:
 
 **Q: "What's your project name?"**
 ```
@@ -184,11 +206,14 @@ Keep it simple - no user accounts or cloud sync for now
 Yes
 ```
 
-**5. Review the generated PRD**
+**5. Save the generated PRD**
 
-The agent saves the output to the `_bmad-output/` folder.
+The agent will output the PRD content. Save it to:
+```
+_bmad-output/PRD.md
+```
 
-Open it and verify it contains:
+Verify it contains:
 - Project overview
 - Core features list
 - User stories ("As a user, I want...")
@@ -196,24 +221,19 @@ Open it and verify it contains:
 
 ### ✅ Success Criteria
 
-- PRD file exists in `_bmad-output/`
+- `_bmad-output/PRD.md` file exists
 - Contains at least 3 user stories
 - Stories follow format: "As a [role], I want [feature] so that [benefit]"
 
 ### 💡 Tips
 
-**Use shorthand answers to speed up elicitation:**
-- `Y` — accept a suggestion or answer "yes"
-- `N` — decline a suggestion or answer "no"
-- `A` — accept all remaining defaults at once (skips remaining Q&A)
-- When asked for a list, provide everything upfront in one message to reduce back-and-forth
+**If the agent file path doesn't match exactly:**
+- Browse your `_bmad/` folder and look for PM-related agent markdown files
+- Common names: `pm-agent.md`, `bmad-pm.md`
+- Run `find _bmad -name "*.md" | grep -i pm` in terminal to locate it
 
 **Keep answers concise:**
-- The PM agent is conversational - short answers speed things up
-- If stuck or confused, start a fresh chat and run `/bmad-pm` then `/bmad-create-prd` again
-
-**Accept defaults:**
-- Agent often suggests options - saying `Y` or `yes` saves time
+- The PM agent is conversational — short answers speed things up
 
 **Don't over-scope:**
 - Stick to the 4 core features listed
@@ -224,16 +244,13 @@ Open it and verify it contains:
 
 ### ⚠️ Common Issues
 
-**Agent gives unexpected responses**
-- Start a fresh chat (open a new chat window)
-- Restart with: `/bmad-pm` then `/bmad-create-prd`
+**"I can't find the agent file"**
+- Run `ls _bmad/bmm/` and look for PM or product-manager files
+- Ask facilitator for the exact path in your installation
 
-**PRD is too short/missing sections**
-- Ask agent: "Can you add user stories?"
+**"PRD is too short/missing sections"**
+- In the same Copilot Chat: "Can you add user stories?"
 - Or: "Can you expand the core features section?"
-
-**Agent suggests features you don't want**
-- Respond: "No, let's keep it simpler. Just [list features you want]"
 
 ---
 
@@ -244,27 +261,18 @@ Use the Architect agent to create technical design documents.
 
 ### Steps
 
-**1. Start a fresh chat and invoke the Architect agent**
+**1. Start a NEW Copilot Chat session**
 
-> ⚠️ **Important:** Open a **new chat session** for this exercise.
+> ⚠️ Always start a fresh chat for each new workflow in BMad v6. This prevents context overflow issues.
 
-In Copilot Chat:
-```
-/bmad-architect
-```
+**2. Attach the Architect agent and your PRD**
 
-Then run the architecture workflow:
+In the new Copilot Chat:
 ```
-/bmad-create-architecture
-```
+#file:_bmad/bmm/agents/architect-agent.md
+#file:_bmad-output/PRD.md
 
-**2. Agent reads your PRD**
-
-You'll see:
-```
-Reading PRD... ✅
-Analyzing requirements...
-I have some questions about the architecture...
+Please run the bmad-create-architecture workflow using the PRD I've attached.
 ```
 
 **3. Answer architecture questions**
@@ -294,46 +302,28 @@ Yes, create separate components for TodoList, TodoItem, and AddTodoForm
 Yes
 ```
 
-**4. Review generated files**
+**4. Save the generated architecture**
 
-The agent saves outputs to the `_bmad-output/` folder:
-- Architecture document with component diagram, data flow, and tech stack decisions
-- Architecture Decision Records (ADRs) included in the architecture document
-
-**5. Create Epics and Stories**
-
-After architecture is complete, open a **new chat** and run:
+Save the output to:
 ```
-/bmad-pm
+_bmad-output/architecture.md
 ```
 
-Then run the epics and stories workflow:
-```
-/bmad-create-epics-and-stories
-```
-
-This breaks down your PRD into structured epics and user stories for implementation.
-
-**6. Examine the architecture**
-
-Open the architecture document from `_bmad-output/` and find:
-- **Component hierarchy** diagram
-- **Data flow** explanation
-- **Technology stack** decisions
-- **File structure** layout
+The architecture document should contain:
+- Component hierarchy
+- Data flow explanation
+- Technology stack decisions
+- File structure layout
 
 ### ✅ Success Criteria
 
-- Architecture document exists in `_bmad-output/` with component diagram
-- ADRs are included in the architecture document
+- `_bmad-output/architecture.md` exists with component diagram
 - Component structure shows: App → TodoList → TodoItem + AddTodoForm
 - Epics and stories created by `/bmad-create-epics-and-stories`
 
-### 💡 Understanding ADRs
+### 💡 Understanding Architecture Decision Records (ADRs)
 
-**Architecture Decision Records (ADRs)** document important technical choices.
-
-Each ADR contains:
+In BMad v6, the Architect agent may produce ADRs documenting important technical choices. Each ADR contains:
 - **Context**: Why did we need to decide?
 - **Decision**: What did we choose?
 - **Consequences**: What are the trade-offs?
@@ -356,50 +346,47 @@ Use React Context API instead of Redux.
 
 ### ⚠️ Common Issues
 
-**"Agent can't find PRD"**
-- Make sure the PRD was saved to `_bmad-output/` in Exercise 2
-- Start a fresh chat and try `/bmad-architect` then `/bmad-create-architecture` again
-
-**Architecture is too complex**
-- Ask: "Can you simplify the component structure?"
+**"Architecture is too complex"**
+- In the same chat: "Can you simplify the component structure?"
 - Request: "Use fewer components for now"
 
-**Missing ADRs in the document**
-- Ask: "Can you add Architecture Decision Records for the main decisions?"
+**"Agent can't find the PRD"**
+- Make sure you attached `#file:_bmad-output/PRD.md` in your prompt
 
 ---
 
 ## Exercise 4: Build Your First Component (30 minutes)
 
 ### Goal
-Use the Developer agent to generate a working React component.
+Use the Developer (DEV) agent to generate a working React component.
 
 ### Steps
 
-**1. Initialize sprint tracking (first time only)**
+**1. Start a NEW Copilot Chat session**
 
-> ⚠️ **Important:** Open a **new chat session** for this exercise.
+**2. Create a user story first**
 
-In Copilot Chat:
-```
-/bmad-sm
-```
+Attach the SM (Scrum Master) agent to create a story file:
 
-Then initialize sprint tracking:
 ```
-/bmad-sprint-planning
-```
+#file:_bmad/bmm/agents/sm-agent.md
+#file:_bmad-output/PRD.md
+#file:_bmad-output/architecture.md
 
-**2. Create a story file**
-
-After sprint planning, run:
-```
-/bmad-create-story
+Please run the bmad-create-story workflow. I want to implement the first user story: "As a user, I want to add tasks so that I can track what I need to do."
 ```
 
-The SM agent will show your user stories from the epics. Select:
+Save the story output to `_bmad-output/stories/story-001-add-task.md`
+
+**3. Start a NEW chat and invoke the DEV agent**
+
 ```
-1
+#file:_bmad/bmm/agents/dev-agent.md
+#file:_bmad-output/PRD.md
+#file:_bmad-output/architecture.md
+#file:_bmad-output/stories/story-001-add-task.md
+
+Please run the bmad-dev-story workflow to implement this story.
 ```
 (Story 1: Add new tasks)
 
@@ -433,38 +420,19 @@ Clear the input field
 Yes
 ```
 
-**5. Agent generates files**
+**5. Apply the generated code**
 
-You'll see:
-```
-Generating component...
-✓ Created src/components/AddTodoForm.tsx
-✓ Created src/components/AddTodoForm.test.tsx
-✓ Updated src/App.tsx
+The DEV agent will output the code. Create the files:
+- `src/components/AddTodoForm.tsx`
+- `src/components/AddTodoForm.test.tsx`
 
-Files ready! Want me to explain the code?
-```
-
-Type:
-```
-Yes, explain
-```
-
-**6. Review the generated code**
-
-Open `src/components/AddTodoForm.tsx`
-
-You'll see:
-- TypeScript interface for props
-- State management with `useState`
-- Form submission handler
-- Input validation
-- TailwindCSS styling
-
-**7. Install dependencies**
+**6. Set up the React project (if not already done)**
 
 ```bash
+npm create vite@latest . -- --template react-ts
 npm install
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
 ```
 
 **8. Run the development server**
@@ -497,9 +465,9 @@ Open browser to: `http://localhost:5173`
 
 1. **PRD** → Knew the feature was "add tasks"
 2. **Architecture** → Knew to use TypeScript and TailwindCSS
-3. **User Story** → Knew validation and input clearing were required
+3. **Story** → Knew validation and input clearing were required
 
-**This is context engineering in action!**
+**This is context engineering in action** — instead of `@bmad` magic, you explicitly provide context via `#file:` attachments, giving the AI agent exactly what it needs.
 
 **Key code sections:**
 
@@ -515,7 +483,7 @@ const [text, setText] = useState('');
 // 3. Validation (from PRD: prevent empty tasks)
 if (text.trim()) {
   onAddTodo(text);
-  setText('');  // Clear after add (from user story)
+  setText('');  // Clear after add (from story)
 }
 
 // 4. Styling (from Architecture: TailwindCSS)
@@ -530,18 +498,12 @@ className="border rounded px-4 py-2 w-full"
 - Ask facilitator for help
 
 **Component doesn't appear in browser**
-- Check `src/App.tsx` - is `<AddTodoForm />` imported?
+- Check `src/App.tsx` — is `<AddTodoForm />` imported?
 - Check console for errors (F12 in browser)
 
 **TypeScript errors in VS Code**
 - Red squiggles are sometimes false positives
 - If app runs in browser, you're okay
-- Can ask agent: "Fix TypeScript errors"
-
-**Input field doesn't work**
-- Check browser console for errors
-- Verify `onChange` handler is present
-- Try refreshing the page
 
 ---
 
@@ -549,64 +511,67 @@ className="border rounded px-4 py-2 w-full"
 
 ### The BMad v6 Workflow with GitHub Copilot
 
-| Phase | Agent | Commands | Output |
-|-------|-------|----------|--------|
-| **Analysis** | PM | `/bmad-pm` → `/bmad-create-prd` | PRD in `_bmad-output/` |
-| **Planning (Arch)** | Architect | `/bmad-architect` → `/bmad-create-architecture` | Architecture in `_bmad-output/` |
-| **Planning (Epics)** | PM | `/bmad-pm` → `/bmad-create-epics-and-stories` | Epics & stories in `_bmad-output/` |
-| **Story Prep** | SM | `/bmad-sm` → `/bmad-sprint-planning` → `/bmad-create-story` | Story file in `_bmad-output/stories/` |
-| **Implementation** | DEV | `/bmad-dev-story` | Code in `src/` |
-
-> ⚠️ Each phase runs in its own **fresh chat session**.
+| Phase | What Happens | How to Invoke in Copilot |
+|-------|-------------|--------------------------|
+| **Planning** | PM agent creates PRD | `#file:pm-agent.md` + run `bmad-create-prd` |
+| **Architecture** | Architect designs system | `#file:architect-agent.md` + `#file:PRD.md` + run `bmad-create-architecture` |
+| **Stories** | SM creates story files | `#file:sm-agent.md` + run `bmad-create-story` |
+| **Implementation** | DEV builds the code | `#file:dev-agent.md` + `#file:story.md` + run `bmad-dev-story` |
 
 ### Key Insights
 
-**✅ Custom Slash Commands**
-- BMad v6 provides dedicated slash commands for each agent and workflow
-- No `@bmad` participant or `#file:` attachments needed — just type the command
-- Always start a fresh chat for each new workflow to prevent context overflow
+**✅ No `@bmad` in GitHub Copilot**
+- GitHub Copilot does not support `@bmad` as a chat participant
+- Use `#file:` to attach agent markdown files as context instead
+- Always start a fresh chat for each new workflow
 
 **✅ Context Engineering Wins**
 - Documents create shared context between agents
 - Each agent builds on previous agent's output
 - Better context = better generated code
 
-**✅ Structured Workflow Beats Ad-Hoc Prompting**
-- Following BMad phases produces consistent results
-- Each phase has a clear purpose
-- Agents know their role
+**✅ BMad v6 Folder Structure**
+```
+your-project/
+├── _bmad/              ← Agent files (read-only, don't edit)
+│   └── bmm/
+│       └── agents/     ← PM, Architect, Dev, SM agent .md files
+├── _bmad-output/       ← Your generated artifacts
+│   ├── PRD.md
+│   ├── architecture.md
+│   └── stories/
+└── src/                ← Your actual code
+```
 
 ---
 
 ## 🚀 Next Steps
 
-### Immediate Practice
-
-Complete the remaining user stories:
+### Complete the Remaining Stories
 
 **Story 2: Mark tasks complete**
+
+Start a new Copilot Chat:
 ```
-# Open a new chat
-/bmad-sm
-/bmad-create-story
-# Select story 2
-# Then open a new chat:
-/bmad-dev-story
+#file:_bmad/bmm/agents/sm-agent.md
+#file:_bmad-output/PRD.md
+#file:_bmad-output/architecture.md
+
+Please create a story for: "As a user, I want to mark tasks as complete."
 ```
 
-**Story 3: Delete tasks**
+Then implement it:
 ```
-# Open a new chat
-/bmad-sm
-/bmad-create-story
-# Select story 3
-# Then open a new chat:
-/bmad-dev-story
+#file:_bmad/bmm/agents/dev-agent.md
+#file:_bmad-output/architecture.md
+#file:_bmad-output/stories/story-002-mark-complete.md
+
+Please run bmad-dev-story to implement this story.
 ```
+
+**Story 3: Delete tasks** — Follow the same pattern.
 
 ### Extend Your App
-
-Try these challenges:
 
 **🔹 Easy:**
 - Add a task counter ("5 tasks remaining")
@@ -623,39 +588,19 @@ Try these challenges:
 - Implement task priority levels
 - Add a search/filter feature
 
-**For each extension:**
-1. Update PRD with new feature (in a fresh chat with `/bmad-pm` then `/bmad-create-prd`)
-2. Run `/bmad-architect` then `/bmad-create-architecture` to update architecture
-3. Run `/bmad-sm` then `/bmad-create-story` to create user story
-4. Run `/bmad-dev-story` in a fresh chat to implement
-
 ### Learn More
 
 **Watch:**
 - [BMad YouTube Channel](https://www.youtube.com/@BMadCode) — Tutorials and masterclasses
-- [BMad Complete Masterclass](https://www.youtube.com/watch?v=LorEJPrALcg) (42 min)
 
 **Read:**
 - [BMad v6 Documentation](https://docs.bmad-method.org/)
 - [Getting Started Tutorial](https://docs.bmad-method.org/tutorials/getting-started/)
-- [Architecture Decision Records Guide](https://adr.github.io/)
+- [Upgrading to v6](https://docs.bmad-method.org/how-to/upgrade-to-v6/)
 
 **Join:**
 - [BMad Discord Community](https://discord.gg/gk8jAdXWmj)
 - Share your projects and ask questions
-
-### Try BMad on Your Own Project
-
-**Start small:**
-- Pick a side project idea
-- Run through all 4 phases
-- See how BMad handles your domain
-
-**Best project types for BMad:**
-- CRUD applications
-- Dashboard/admin panels
-- Internal tools
-- MVPs and prototypes
 
 ---
 
@@ -663,15 +608,15 @@ Try these challenges:
 
 You've completed the BMad Method v6 workshop with GitHub Copilot. You now have:
 
-- ✅ Hands-on experience with AI agent orchestration using BMad v6 slash commands
-- ✅ Understanding of the fresh-chat-per-workflow model
+- ✅ Hands-on experience with AI agent orchestration using `#file:` context
+- ✅ Understanding of why `@bmad` doesn't work in Copilot (and the correct approach)
 - ✅ A working to-do app built with AI assistance
 - ✅ Foundation for building larger applications with BMad v6
 
 **Keep practicing!** The more you use BMad, the better you'll get at:
 - Writing effective PRDs
 - Making architectural decisions
-- Working with AI agents via slash commands
+- Working with AI agents via file context
 - Building faster with better quality
 
 ---
@@ -688,6 +633,6 @@ Please fill out our feedback survey: [Link from facilitator]
 
 ---
 
-**Questions?** Ask your facilitator or join the BMad Discord community!
+**Questions?** Ask your facilitator or join the [BMad Discord community](https://discord.gg/gk8jAdXWmj)!
 
 **Happy building!** 🚀
