@@ -189,9 +189,62 @@ Then kick off the PRD workflow:
 
 The agent will guide you conversationally. Use shorthand responses to move quickly:
 
-**Q: "What's your project name?"**
+**Q: "Do you have any of these documents you'd like me to include as context?"
 ```
-To-Do App
+     - Product briefs or project ideas
+     - Market or domain research
+     - Brainstorming session notes
+     - Technical documentation
+     - Any other relevant documents
+
+   Please let me know if you have files to include, or if you'd like to continue
+   without any input documents and we'll build the PRD from scratch through our
+   conversation.
+```
+
+Go ahead and start the project PRD
+
+[C] Continue - Save this and move to Project Discovery (Step 2 of 11)
+```
+C
+```
+
+Further refinement
+```
+Perfect! I've captured the classification. Now, before we move to the vision
+   phase, I want to offer you some options to deepen our discovery if you'd like.
+
+   -------------------------------------------------------------------------------
+
+   Here's the classification:
+
+   Project Type: Web App
+   Domain: Productivity/Task Management
+   Complexity: Medium
+   Project Context: Greenfield
+
+   Key Signals:
+
+     - SPA/browser-based task tracking
+     - Dependency resolution algorithms
+     - Predictive analytics for deadline slips
+     - Pattern recognition on progress data
+     - Clean UI/UX requirements
+
+   -------------------------------------------------------------------------------
+
+   What would you like to do?
+
+   Select: [A] Advanced Elicitation [P] Party Mode [C] Continue to Product Vision
+   (Step 2b of 13)
+
+   Note:
+
+     - [A] Advanced Elicitation - Deep dive with structured techniques to uncover hidden
+   requirements
+     - [P] Party Mode - Multi-agent discussion to explore different perspectives on your
+   product
+     - [C] Continue - Move forward with what we have (we can always come back later)
 ```
 
 **Q: "Describe your project"**
