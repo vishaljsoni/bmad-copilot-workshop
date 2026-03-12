@@ -48,17 +48,6 @@ BMad v6 installs **custom agents** and **slash commands** directly into your pro
 3. Type the slash command to invoke the agent (e.g. `/bmad-pm`)
 4. Run the relevant workflow command (e.g. `/bmad-create-prd`)
 
-**Shorthand responses** speed up every workflow:
-
-| Shorthand | Meaning |
-|-----------|---------|
-| `Y` | Yes / Agree / Accept |
-| `N` | No / Decline |
-| `A` | Accept **all** remaining defaults |
-| One-line answer | Provide everything upfront to skip follow-up questions |
-
-> ⚠️ **Key Rule:** Each BMad workflow runs in its own **fresh chat session** to prevent context overflow.
-
 ---
 
 ## Exercise 1: Install BMad Method (10 minutes)
@@ -187,42 +176,152 @@ Then kick off the PRD workflow:
 
 **4. Answer the PM agent's questions**
 
-The agent will guide you conversationally. Use shorthand responses to move quickly:
+The agent will guide you conversationally. Answer the questions to help formulate the PRD and use shorthand responses to move quickly.
 
-**Q: "What's your project name?"**
+>🎮 Choose your own adventure!
 ```
-To-Do App
-```
+Simple task manager. Features and prompts will start to diverge for each user as they dynamically answer the following prompt questions.
 
-**Q: "Describe your project"**
+📋 Answer each question to explore the features at your pace.
+🗂️ A premade PRD is available for the the rest of the exercise.
 ```
-A simple task manager where users can add tasks, mark them complete, and delete them.
-```
+Simple task manager. Features and prompts will start to diverge for each user as they dynamically answer the following prompt questions
 
-**Q: "What are the core features?"**
-```
-Add tasks, mark complete, delete tasks, view list
-```
+Some sample questions shown below:
 
-**Q: "Who are your target users?"**
+**Q: "Do you have any of these documents you'd like me to include as context?"**
 ```
-Individual users tracking personal to-do items
-```
+     - Product briefs or project ideas
+     - Market or domain research
+     - Brainstorming session notes
+     - Technical documentation
+     - Any other relevant documents
 
-**Q: "Any specific requirements?"**
-```
-No user accounts or cloud sync for now
-```
-
-**Q: "Ready to generate PRD?"**
-```
-Y
+   Please let me know if you have files to include, or if you'd like to continue
+   without any input documents and we'll build the PRD from scratch through our
+   conversation.
 ```
 
-> 💡 **Speed tip:** Provide all info upfront to skip most follow-up questions:
-> ```
-> To-Do App. Simple task manager: add tasks, mark complete, delete tasks, view list. No auth or cloud sync.
-> ```
+Go ahead and create the project PRD
+
+**Q: "So user, tell me about bmad-todo-workshop. What problem does this solve? Who'sit for? What excites you about building this?"**
+
+```
+It's for me, I want a simple task tracking app with a clean but attractive UI. I would want it to highlight complex tasks, especially if deadlines are going to slip
+```
+
+Further refinement
+```
+Perfect! I've captured the classification. Now, before we move to the vision phase, I want to offer you some options to deepen our discovery if you'd like.
+
+-------------------------------------------------------------------------------
+
+   Here's the classification:
+
+   Project Type: Web App
+   Domain: Productivity/Task Management
+   Complexity: Medium
+   Project Context: Greenfield
+
+   Key Signals:
+
+     - SPA/browser-based task tracking
+     - Dependency resolution algorithms
+     - Predictive analytics for deadline slips
+     - Pattern recognition on progress data
+     - Clean UI/UX requirements
+
+   -------------------------------------------------------------------------------
+
+   What would you like to do?
+
+   Select: [A] Advanced Elicitation [P] Party Mode [C] Continue to Product Vision
+   (Step 2b of 13)
+
+   Note:
+
+     - [A] Advanced Elicitation - Deep dive with structured techniques to uncover hidden
+   requirements
+     - [P] Party Mode - Multi-agent discussion to explore different perspectives on your
+   product
+     - [C] Continue - Move forward with what we have (we can always come back later)
+```
+
+Respond with option `[A]` to get advanced elicitations.
+
+**Q: "Advanced Elicatation"**
+```
+Advanced Elicitation - Project Discovery Enhancement
+
+I've analyzed our conversation about your intelligent task tracking app. Here are 5 methods that will help us deepen requirements and uncover hidden needs:
+
+Choose a number (1-5), [r] to Reshuffle, [a] List All, or [x] to Proceed:
+
+  - First Principles Analysis - Strip away assumptions about "task management" and rebuild from what you fundamentally need. Why dependencies? Why prediction? What core problem are we really solving?
+  - What If Scenarios - Explore edge cases: What if you have 100 asks? What if a dependency chain is 10 levels deep? What if predictions are wrong? What happens when patterns change?
+  - Pre-mortem Analysis - Imagine this app fails after 6 months. You stopped using it. Why? What made it annoying or useless? Let's prevent that now.
+  - User Persona Focus Group - Even though it's for you, let's explore different "versions of you" - stressed-deadline-you, planning-ahead-you, overwhelmed-you. What does each need?
+  - Reverse Engineering - Start from your ideal end state: "I never miss deadlines and always know what to work on next." Work backwards to required features.
+
+[r] Reshuffle for 5 new methods
+[a] List all 50 methods
+[x] Proceed with current classification
+
+What would you like to explore?
+```
+Explore various methods or ask it to `suggest your top 3 that are best suited to my application`
+
+**Example: Pre-mortem Analysis**
+```
+Pre-mortem Analysis: Imagining Failure
+
+It's September 2026 - six months from now. You built the task tracking app, used it for a while, but now it's sitting abandoned. You've gone back to sticky notes, a simple text file, or some other tool.
+
+Let me ask you to imagine this failure scenario:
+
+What happened? Why did you stop using it?
+
+Let me seed some possibilities to get you thinking:
+
+- "Too much friction" - Was it the data entry? Setting up dependencies felt tedious? Progress tracking required too much manual updating?
+- "Predictions were annoying" - Did the slip predictions cry wolf too often? Were they not accurate enough? Did constant warnings create alert fatigue?
+- "Couldn't trust it" - Did the prediction algorithm feel like a black box? Were you second-guessing its analysis instead of trusting it?
+- "Doesn't match my reality" - Did it assume steady progress when your work is actually bursty? Did dependencies feel too rigid for your flexible workflow?
+- "Feature creep killed it" - Did you over-build? Too many bells and whistles when you just needed something simple and fast?
+- "Maintenance burden" - Did keeping task statuses updated become another todo item? Did old completed tasks clutter everything?
+
+Think about your past experiences with productivity tools. What pattern
+typically causes you to abandon them? What would make THIS app join that graveyard?
+```
+**Q: "Done with elicitation?"**
+```
+Excellent! I've captured your product vision. This is really coming together - you have a clear, compelling vision that solves a real problem you've personally experienced.
+
+What would you like to do?
+
+Select: [A] Advanced Elicitation [P] Party Mode [C] Continue to Executive Summary (Step 2c of 13)
+```
+
+**Approve executive summary**
+
+**Define Success Criteria**
+```
+Measurable Outcomes:
+
+Let's get specific. What would make you say "this app is working"?
+
+  - Percentage of deadlines met vs. missed?
+  - How many "close calls" prevented per week/month?
+  - Reduction in overdue tasks compared to your current system?
+  - Time saved not tracking things manually?
+
+What does success feel like for you as the user?
+```
+
+**Milestonre: Step 4**
+```
+Select: [A] Advanced Elicitation [P] Party Mode [C] Continue to User Journey Mapping (Step 4 of 11)
+``` 
 
 **5. Save the generated PRD**
 
@@ -237,15 +336,19 @@ Verify it contains:
 - User stories ("As a user, I want...")
 - Success criteria
 
-**6. Create Epics and Stories**
+## [Optional] Exercise 3: UX Design (15 minutes)
+Create a new chat and run
+```
+\bmad-ux-desginer
+```
+Select `CU`
 
 Open a new Copilot Chat, then:
 ```
 /bmad-pm
 /bmad-create-epics-and-stories
 ```
-
-This breaks the PRD into epics and story files for implementation.
+Follow the prompts
 
 ### ✅ Success Criteria
 
@@ -274,7 +377,7 @@ This breaks the PRD into epics and story files for implementation.
 
 ---
 
-## Exercise 3: Design Architecture (25 minutes)
+## Exercise 4: Design Architecture (15 minutes)
 
 ### Goal
 Use the Architect agent to create technical design documents.
@@ -300,32 +403,32 @@ The agent will automatically read your PRD from `_bmad-output/`.
 
 **3. Answer architecture questions**
 
-**Q: "How should we manage state?"**
+**Q: "What I can help you with?"**
 ```
-React Context
+🏗️ Winston - Architect
+
+Hey user! Winston here. I'm your system architect - I help you design technical
+solutions that are pragmatic, scalable, and actually ship. Let's turn your
+product vision into a solid technical foundation.
+
+What I can help you with:
+
+  - [MH] Redisplay Menu Help
+  - [CH] Chat with the Agent about anything
+  - [CA] Create Architecture: Guided Workflow to document technical decisions to
+keep implementation on track
+  - [IR] Implementation Readiness: Ensure the PRD, UX, and Architecture and Epics
+and Stories List are all aligned
+  - [PM] Start Party Mode
+  - [DA] Dismiss Agent
+
+💡 Tip: You can type /bmad-help at any time to get advice on what to do next.
+For example: /bmad-help where should I start with an idea I have that does XYZ
+
+What would you like to do? (Enter a number or command)
 ```
 
-**Q: "Where should we store tasks?"**
-```
-Local storage
-```
-
-**Q: "Styling approach?"**
-```
-TailwindCSS
-```
-
-**Q: "Component structure?"**
-```
-Y
-```
-
-**Q: "Ready to generate architecture?"**
-```
-Y
-```
-
-> 💡 **Speed tip:** Answer with `A` to accept all remaining defaults at once.
+Answer `CA` to continue and follow the prompts.
 
 **4. Verify the generated architecture**
 
@@ -374,8 +477,7 @@ Use React Context API instead of Redux.
 - Verify `_bmad-output/prd.md` exists from Exercise 2
 
 ---
-
-## Exercise 4: Build Your First Component (30 minutes)
+## Exercise 5: Build Your First Component (30 minutes)
 
 ### Goal
 Use the Scrum Master (SM) and Developer (DEV) agents to generate a working React component.
@@ -405,28 +507,6 @@ Select **Story 1: Add new tasks** and answer `Y` to defaults. The story file wil
 ```
 
 **3. Answer implementation questions**
-
-**Q: "What should we name the component?"**
-```
-AddTodoForm
-```
-
-**Q: "Should we validate input?"**
-```
-Y, validate input
-```
-
-**Q: "What happens after adding a task?"**
-```
-Clear the input field
-```
-
-**Q: "Include tests?"**
-```
-Y, include tests
-```
-
-> 💡 **Speed tip:** Use `A` to accept all remaining defaults after providing your key answers.
 
 **4. Apply the generated code**
 
@@ -608,7 +688,7 @@ Then implement in a new chat:
 - Add drag-and-drop reordering
 - Implement task priority levels
 - Add a search/filter feature
-
+---
 ### Learn More
 
 **Watch:**
