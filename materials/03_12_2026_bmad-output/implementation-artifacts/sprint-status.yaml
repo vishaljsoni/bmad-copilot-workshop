@@ -1,0 +1,84 @@
+# generated: 2026-03-12T17:19:04.046Z
+# project: bmad-todo-workshop
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: {project-root}/_bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-03-12T17:19:04.046Z
+project: bmad-todo-workshop
+project_key: NOKEY
+tracking_system: file-system
+story_location: /Users/sumil/Documents/repos/bmad-todo-workshop/_bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: Project Foundation & Data Layer
+  epic-1: in-progress
+  1-1-initialize-react-typescript-project-with-vite: ready-for-dev
+  1-2-set-up-state-management-with-zustand: backlog
+  1-3-configure-tailwind-css-and-base-styles: backlog
+  1-4-implement-indexeddb-with-dexie-for-task-storage: backlog
+  1-5-implement-localstorage-wrapper-for-preferences: backlog
+  epic-1-retrospective: optional
+  
+  # Epic 2: Core Task Management
+  epic-2: backlog
+  2-1-create-task-entity-and-basic-task-list-display: backlog
+  2-2-implement-quick-add-modal-with-ctrl-k-shortcut: backlog
+  2-3-add-natural-language-deadline-parsing: backlog
+  2-4-implement-task-status-management-not-started-in-progress-complete: backlog
+  2-5-add-task-edit-and-delete-functionality: backlog
+  2-6-implement-task-completion-toggle: backlog
+  epic-2-retrospective: optional
+  
+  # Epic 3: Intelligent Dashboard & Segmentation (No stories defined yet)
+  epic-3: backlog
+  epic-3-retrospective: optional
+  
+  # Epic 4: Dependency Tracking (No stories defined yet)
+  epic-4: backlog
+  epic-4-retrospective: optional
+  
+  # Epic 5: Pattern Analysis & History (No stories defined yet)
+  epic-5: backlog
+  epic-5-retrospective: optional
+  
+  # Epic 6: Predictive Intelligence (No stories defined yet)
+  epic-6: backlog
+  epic-6-retrospective: optional
+  
+  # Epic 7: Keyboard Navigation & Accessibility (No stories defined yet)
+  epic-7: backlog
+  epic-7-retrospective: optional
+  
+  # Epic 8: Data Portability & Backup (No stories defined yet)
+  epic-8: backlog
+  epic-8-retrospective: optional
